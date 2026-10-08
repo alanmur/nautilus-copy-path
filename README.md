@@ -51,7 +51,7 @@ sudo apt install python3-nautilus wl-clipboard libnotify-bin
 Clone the repository and run the install script:
 
 ```bash
-git clone https://github.com/your-username/nautilus-copy-path.git
+git clone https://github.com/dagimg-dot/nautilus-copy-path.git
 cd nautilus-copy-path
 ./scripts/install.sh
 ```
