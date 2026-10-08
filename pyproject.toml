@@ -1,0 +1,19 @@
+[project]
+name = "nautilus-copy-path"
+version = "0.1.0"
+description = "Nautilus extension to copy file and folder paths"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = []
+
+[tool.ruff]
+line-length = 100
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP"]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

@@ -1,10 +1,11 @@
-from pathlib import Path
 import json
 import tempfile
 import unittest
+from pathlib import Path
+
 from extension.copy_path import (
-    format_single_path,
     format_multiple_paths,
+    format_single_path,
     get_git_relative_path,
 )
 

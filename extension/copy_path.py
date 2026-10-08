@@ -1,13 +1,11 @@
 from __future__ import annotations
 
 import json
-import os
 import shlex
 import shutil
 import subprocess
 import urllib.parse
 from pathlib import Path
-from typing import List
 
 CONFIG_PATH = Path.home() / ".config" / "nautilus-copy-path" / "config.json"
 
@@ -21,7 +19,7 @@ DEFAULT_CONFIG = {
 def load_config() -> dict:
     if CONFIG_PATH.is_file():
         try:
-            with open(CONFIG_PATH, "r", encoding="utf-8") as f:
+            with open(CONFIG_PATH, encoding="utf-8") as f:
                 data = json.load(f)
                 return {**DEFAULT_CONFIG, **data}
         except Exception:
@@ -76,6 +74,7 @@ def format_multiple_paths(paths: list[str], style: str) -> str:
 def copy_to_clipboard(text: str) -> None:
     try:
         from gi.repository import Gdk
+
         display = Gdk.Display.get_default()
         if display:
             clipboard = display.get_clipboard()
@@ -116,10 +115,14 @@ def notify(summary: str, body: str = "") -> None:
             subprocess.Popen(
                 [
                     "notify-send",
-                    "-t", "1500",
-                    "-h", "int:transient:1",
-                    "-a", "Files",
-                    "-i", "edit-copy",
+                    "-t",
+                    "1500",
+                    "-h",
+                    "int:transient:1",
+                    "-a",
+                    "Files",
+                    "-i",
+                    "edit-copy",
                     summary,
                     body,
                 ],
@@ -132,6 +135,7 @@ def notify(summary: str, body: str = "") -> None:
 
 try:
     import gi
+
     for _ver in ("4.1", "4.0", "3.0"):
         try:
             gi.require_version("Nautilus", _ver)
@@ -145,6 +149,7 @@ try:
         except ValueError:
             pass
     from gi.repository import GObject, Nautilus
+
     HAS_NAUTILUS = True
 except Exception:
     HAS_NAUTILUS = False
@@ -180,7 +185,7 @@ class CopyPathExtension(GObject.GObject, Nautilus.MenuProvider):
             count = len(paths)
             notify(f"{count} paths copied", f"Format: {style}")
 
-    def get_file_items(self, *args) -> List[Nautilus.MenuItem]:
+    def get_file_items(self, *args) -> list[Nautilus.MenuItem]:
         if not HAS_NAUTILUS:
             return []
         files = args[-1]
@@ -222,12 +227,14 @@ class CopyPathExtension(GObject.GObject, Nautilus.MenuProvider):
             ]
             if get_git_relative_path(path):
                 formats.append(("Git Relative Path", "git"))
-            formats.extend([
-                ("Shell Quoted", "shell"),
-                ("Name Only", "basename"),
-                ("File URI", "uri"),
-                ("Markdown Link", "markdown"),
-            ])
+            formats.extend(
+                [
+                    ("Shell Quoted", "shell"),
+                    ("Name Only", "basename"),
+                    ("File URI", "uri"),
+                    ("Markdown Link", "markdown"),
+                ]
+            )
 
             for idx, (label, style) in enumerate(formats):
                 sub_item = Nautilus.MenuItem(
@@ -279,7 +286,7 @@ class CopyPathExtension(GObject.GObject, Nautilus.MenuProvider):
 
         return [main_item, submenu_item]
 
-    def get_background_items(self, *args) -> List[Nautilus.MenuItem]:
+    def get_background_items(self, *args) -> list[Nautilus.MenuItem]:
         if not HAS_NAUTILUS:
             return []
         folder = args[-1]
@@ -318,10 +325,12 @@ class CopyPathExtension(GObject.GObject, Nautilus.MenuProvider):
         ]
         if get_git_relative_path(path):
             formats.append(("Git Relative Path", "git"))
-        formats.extend([
-            ("Shell Quoted", "shell"),
-            ("Folder URI", "uri"),
-        ])
+        formats.extend(
+            [
+                ("Shell Quoted", "shell"),
+                ("Folder URI", "uri"),
+            ]
+        )
 
         for idx, (label, style) in enumerate(formats):
             sub_item = Nautilus.MenuItem(

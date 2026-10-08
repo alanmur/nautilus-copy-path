@@ -84,18 +84,30 @@ The extension works with default settings out of the box. To customize behavior,
 | `show_submenu` | boolean | `true` | Display the "Copy as..." submenu |
 | `default_format` | string | `"absolute"` | Format used by the top-level item (`absolute`, `tilde`, `git`, `shell`, `basename`, `uri`, `markdown`) |
 
-## Running Tests
+## Development
 
-Run the test suite using Python's standard unittest:
+Run tests:
 
 ```bash
 make test
 ```
 
-Or directly:
+Check linting and formatting with Ruff:
 
 ```bash
-python3 -m unittest discover -s tests -v
+make check
+```
+
+Automatically format code:
+
+```bash
+make format
+```
+
+Run linter with auto-fixes:
+
+```bash
+make lint
 ```
 
 ## Uninstallation
